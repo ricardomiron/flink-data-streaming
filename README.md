@@ -49,13 +49,30 @@ You may need to additionally specify the complete path of Flink and add the clas
 `/home/user/Downloads/flink-1.3.0/bin/flink run -c flinkproject.VehicleTelematics target/VehicleTelematic-1.0-SNAPSHOT.jar /home/user/VehicleTelematics/resources/input.csv /home/user/VehicleTelematics/resources/`
 
 ## Program Structure
+The first thing a Flink application needs to do is set up its execution environment. Our `VehicleTelematics` class contains the _Main_ class which contains all the configuration options as well as setting the program parallelism. It retrieves the other methods,  
 
 **Vehicle Telematics**
 
+- Set up the execution environment
+- Read an input stream
+- Apply transformations (import _SpeedRadar, AvgSpeed & AccidentReporter_)
+- Output the result
+- Execute
+
 **Speed Radar**
+- Filter cars over 90 mph (`MapFilter[Spd]`)
 
 **Average Speed Control**
-> The average speed is calculated as the distance divided by the time spent to drive that distance.
+- Filter segment 52 to 56 (`MapFilter[Seg]`)
+- Keyed stream (`KeyBy[VID, Dir]`)
+> Timestamps and watermarks for event-time ¿?
+
+- Start session window (`EventTimeSessionWindows`)
+- Check segment completion (`UDF`)
+> Cars that do not complete the segment (52-56) are not taken into account.
+
+- Calculate average speed (`UDF`)
+> The average speed is calculated as the distance divided by the time spent to drive that distance. `AvgSpeed = (FinalPos - InitialPos) / (FinalTime2 - InitialTime)`
 
 **Accident Reporter**
 
