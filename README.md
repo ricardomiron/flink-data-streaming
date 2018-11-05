@@ -59,11 +59,13 @@ The first thing a Flink application needs to do is set up its execution environm
 - Output the result
 - Execute
 
+---
+
 **Speed Radar**
-- Filter cars over 90 mph (`MapFilter[Spd]`)
+- Filter cars over 90 mph (`Filter[Spd]`)
 
 **Average Speed Control**
-- Filter segment 52 to 56 (`MapFilter[Seg]`)
+- Filter segment 52 to 56 (`Filter[Seg]`)
 - Keyed stream (`KeyBy[VID, Dir]`)
 > Timestamps and watermarks for event-time ¿?
 
