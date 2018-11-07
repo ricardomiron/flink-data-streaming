@@ -24,9 +24,9 @@ public class TrafficEvent extends Tuple8<Integer, Integer, Integer,
         return f3;
     }
 
-	public Integer getLane() {
-		return f4;
-	}
+  	public Integer getLane() {
+  		return f4;
+  	}
 
     public Integer getDirection() {
         return f5;
@@ -36,9 +36,9 @@ public class TrafficEvent extends Tuple8<Integer, Integer, Integer,
         return f6;
     }
 
-	public Integer getPosition() {
-		return f7;
-	}
+  	public Integer getPosition() {
+  		return f7;
+  	}
 
     public void setTime(int time) {
         f0 = time;
