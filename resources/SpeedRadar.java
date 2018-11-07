@@ -5,7 +5,7 @@ import sisdistr.events.SpeedRadarEvent;
 
 public class SpeedRadar {
 
-    public static SingleOutputStreamOperator something (SingleOutputStreamOperator<TrafficEvent> tuples){
+    public static SingleOutputStreamOperator detectspeed (SingleOutputStreamOperator<TrafficEvent> tuples){
       return tuples
         .filter(new FilterFunction<TrafficEvent>() {
             @Override
