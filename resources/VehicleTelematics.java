@@ -12,12 +12,15 @@ import org.apache.flink.api.java.tuple.Tuple8;
 
 public class VehicleTelematics {
 
+    // main() defines and executes the DataStream program
     public static void main(String[] args){
 
+        // set up the streaming execution environment
         final StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
         String inFilePath = args[0];
         String outFilePath = args[1];
+        // create a DataStream[SensorReading] from a stream source
         DataStreamSource<String> source = env.readTextFile(inFilePath);
 
 
@@ -40,12 +43,15 @@ public class VehicleTelematics {
             }
         });
 
+        //Apply streaming transformations to implement the application logic
         SingleOutputStreamOperator speedFines = SpeedRadar.something(filterOut);
 
-		 speedFines.writeAsCsv(outFilePath);
+      //Output the result to a data sink
+		  speedFines.writeAsCsv(outFilePath);
 
+        // execute application
         try {
-            env.execute("SpeedRadar");
+            env.execute("VehicleTelematics");
         } catch (Exception e) {
             e.printStackTrace();
         }
