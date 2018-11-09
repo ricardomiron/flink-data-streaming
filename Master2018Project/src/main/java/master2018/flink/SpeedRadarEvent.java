@@ -1,4 +1,4 @@
-package sisdistr.events;
+package master2018.flink;
 import org.apache.flink.api.java.tuple.Tuple6;
 
 public class SpeedRadarEvent extends Tuple6<Integer, Integer, Integer, Integer, Integer, Integer> {
