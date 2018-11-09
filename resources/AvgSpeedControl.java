@@ -18,7 +18,6 @@ public class AvgSpeedControl {
 
         //Convert the DataStream into a KeyedStream using the specified keys
         .keyBy(new KeySelector<TrafficEvent, Tuple3<Integer, Integer, Integer>>() {
-
             @Override
             public Tuple3<Integer, Integer, Integer> getKey(TrafficEvent trafficEvent) throws Exception {
                 return Tuple3.of(trafficEvent.getVid(), trafficEvent.getHighway(), trafficEvent.getDirection());
