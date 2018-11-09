@@ -1,7 +1,5 @@
 package master2018.flink;
 
-import sisdistr.events.AccidentEvent;
-import sisdistr.events.TrafficEvent;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.java.tuple.Tuple5;
