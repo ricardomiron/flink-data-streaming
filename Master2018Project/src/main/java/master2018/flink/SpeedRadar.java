@@ -6,7 +6,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 
 public class SpeedRadar {
 
-    public static SingleOutputStreamOperator detectspeed (SingleOutputStreamOperator<TrafficEvent> tuples){
+    public static SingleOutputStreamOperator detectSpeed (SingleOutputStreamOperator<TrafficEvent> tuples){
       return tuples
         .filter(new FilterFunction<TrafficEvent>() {
             @Override

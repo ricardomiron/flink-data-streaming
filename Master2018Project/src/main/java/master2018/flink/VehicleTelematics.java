@@ -41,16 +41,16 @@ public class VehicleTelematics {
         });
 
         //Apply streaming transformations to implement the application logic
-        SingleOutputStreamOperator speedFines = SpeedRadar.detectspeed(filterOut);
-//      SingleOutputStreamOperator avgSpeedFines = AvgSpeedControl.detectavg(filterOut);
+        SingleOutputStreamOperator speedFines = SpeedRadar.detectSpeed(filterOut);
+        SingleOutputStreamOperator avgSpeedFines = AvgSpeedControl.detectAvg(filterOut);
         SingleOutputStreamOperator accidents = AccidentReporter.reportAcc(filterOut);
 
         //Create datasinks
         speedFines.writeAsCsv(Paths.get(outFilePath, "speedfines.csv").toString(), FileSystem.WriteMode.OVERWRITE)
                 .setParallelism(1);
 
-//        avgSpeedFines.writeAsCsv(Paths.get(outFilePath, "avgspeedfines.csv").toString(), FileSystem.WriteMode.OVERWRITE)
-//                .setParallelism(1);
+        avgSpeedFines.writeAsCsv(Paths.get(outFilePath, "avgspeedfines.csv").toString(), FileSystem.WriteMode.OVERWRITE)
+                .setParallelism(1);
 
         accidents.writeAsCsv(Paths.get(outFilePath, "accidents.csv").toString(), FileSystem.WriteMode.OVERWRITE)
                 .setParallelism(1);
