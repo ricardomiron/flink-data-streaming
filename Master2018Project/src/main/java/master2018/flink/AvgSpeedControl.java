@@ -76,12 +76,12 @@ public class AvgSpeedControl {
             double average = (finalPos - initialPos) * 1.0 / (finalTime - initialTime) * 2.23694;
 
             if (average > 60) {
-                AvgEvent.setEntryTime(initialTime);
-                AvgEvent.setExitTime(finalTime);
-                AvgEvent.setVid(key.f0);
-                AvgEvent.setHighway(key.f1);
-                AvgEvent.setDirection(key.f2);
-                AvgEvent.setAvg(average);
+                avgEvent.setEntryTime(initialTime);
+                avgEvent.setExitTime(finalTime);
+                avgEvent.setVid(key.f0);
+                avgEvent.setHighway(key.f1);
+                avgEvent.setDirection(key.f2);
+                avgEvent.setAvg(average);
                 collector.collect(avgEvent);
             }
 
