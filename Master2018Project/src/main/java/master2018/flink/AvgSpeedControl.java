@@ -26,6 +26,7 @@ public class AvgSpeedControl {
                         }else{return false;}
                     }
                 })
+
                 //Assign Timestamps and Watermarks
                 .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<TrafficEvent>() {
                     @Override
@@ -33,6 +34,7 @@ public class AvgSpeedControl {
                         return trafficEvent.getTime() * 1000;
                     }
                 })
+
                 //Convert the DataStream into a KeyedStream using the specified keys
                 .keyBy(new KeySelector<TrafficEvent, Tuple3<Integer, Integer, Integer>>() {
                     @Override
@@ -40,8 +42,10 @@ public class AvgSpeedControl {
                         return Tuple3.of(trafficEvent.getVid(), trafficEvent.getHighway(), trafficEvent.getDirection());
                     }
                 })
+
                 //Create a Session Window
                 .window(EventTimeSessionWindows.withGap(Time.seconds(31)))
+
                 //Detects cars with an average speed higher than 60 mph
                 .apply(new AvgWindowFunction());
 
@@ -62,10 +66,12 @@ public class AvgSpeedControl {
             int finalPos = Integer.MIN_VALUE;
             int totalEvents = Iterables.size(in);
 
+            //Checking if a vehicle has past at least 5 segments
             if (totalEvents < 5) {
                 return;
             }
 
+            //Iterate over each element of the window
             for (TrafficEvent event : in) {
                 initialTime = Integer.min(initialTime, event.getTime());
                 initialPos = Integer.min(initialPos, event.getPosition());
@@ -73,8 +79,10 @@ public class AvgSpeedControl {
                 finalPos = Integer.max(finalPos, event.getPosition());
             }
 
-            double average = (finalPos - initialPos) * 1.0 / (finalTime - initialTime) * 2.23694;
+            //Calculate average
+            double average = (finalPos - initialPos) * 1.0 / (finalTime - initialTime) * 2.23694; //mps to mph
 
+            //Checking if a vehicle surpases 60mph
             if (average > 60) {
                 avgEvent.setEntryTime(initialTime);
                 avgEvent.setExitTime(finalTime);

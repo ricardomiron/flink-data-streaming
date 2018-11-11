@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/flink-project-upm.iml" filepath="$PROJECT_DIR$/flink-project-upm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Master2018Project/src/main/main.iml" filepath="$PROJECT_DIR$/Master2018Project/src/main/main.iml" />
+    </modules>
+  </component>
+</project>

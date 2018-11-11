@@ -14,19 +14,28 @@ public class AccidentReporter {
 
     public static SingleOutputStreamOperator reportAcc (SingleOutputStreamOperator<TrafficEvent> tuples){
       return tuples
+
+      //Filter tuples which speed equal 0
         .filter(new FilterFunction<TrafficEvent>() {
             @Override
             public boolean filter(TrafficEvent in) throws Exception {
-                if(in.getSpeed() == 0){ return true;  //filtering the vehicles which speed equals 0
+                if(in.getSpeed() == 0){ return true;
                 }else{return false;}
             }
         })
+
+        //Convert the DataStream into a KeyedStream using the specified keys
         .keyBy(new KeySelector<TrafficEvent, Tuple5<Integer, Integer, Integer, Integer, Integer>>() {
             @Override
             public Tuple5<Integer, Integer, Integer, Integer, Integer> getKey(TrafficEvent trafficEvent) throws Exception {
                 return Tuple5.of(trafficEvent.getVid(), trafficEvent.getHighway(), trafficEvent.getDirection(), trafficEvent.getSegment(), trafficEvent.getPosition());
               }
-          }).countWindow(4, 1)
+          })
+
+        //Creates window of size 4
+        .countWindow(4, 1)
+
+        //Implements a WindowFunction
         .apply(new AccidentWindowFunction());
     }
 
@@ -38,9 +47,10 @@ public class AccidentReporter {
 
         @Override
         public void apply(Tuple5<Integer, Integer, Integer, Integer, Integer> key, GlobalWindow window,
-                          Iterable<TrafficEvent> in, Collector<AccidentEvent> collector) throws Exception {
+                          Iterable<TrafficEvent> in, Collector<AccidentEvent> out) throws Exception {
 
             int counter = 1;
+
             //Using Iterator to browse traffic events
             Iterator<TrafficEvent> iterator = in.iterator();
             int time1 = iterator.next().getTime();
@@ -48,7 +58,8 @@ public class AccidentReporter {
             while (iterator.hasNext()) {
                 counter++;
                 lastEvent = iterator.next();
-                //checking if the vehicle reports at least 4 consecutive events from the same position
+
+                //Checking if the vehicle reports at least 4 consecutive events from the same position
                 if (counter == 4) {
                     accidentEvent.setTime1(time1);
                     accidentEvent.setTime2(lastEvent.f0);
@@ -57,7 +68,7 @@ public class AccidentReporter {
                     accidentEvent.setSegment(key.f3);
                     accidentEvent.setDirection(key.f2);
                     accidentEvent.setPosition(key.f4);
-                    collector.collect(accidentEvent);
+                    out.collect(accidentEvent);
                 }
             }
         }

@@ -17,10 +17,11 @@ public class VehicleTelematics {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         String inFilePath = args[0];
         String outFilePath = args[1];
+
         //Create a DataStream[SensorReading] from a stream source
         DataStreamSource<String> source = env.readTextFile(inFilePath);
 
-
+        //Parser for the CSV input
         SingleOutputStreamOperator<TrafficEvent> filterOut = source.map(new MapFunction<String, TrafficEvent>() {
             TrafficEvent out = new TrafficEvent();
 
@@ -45,7 +46,7 @@ public class VehicleTelematics {
         SingleOutputStreamOperator avgSpeedFines = AvgSpeedControl.detectAvg(filterOut);
         SingleOutputStreamOperator accidents = AccidentReporter.reportAcc(filterOut);
 
-        //Create datasinks
+        //Create datasinks (outputs as CSV)
         speedFines.writeAsCsv(Paths.get(outFilePath, "speedfines.csv").toString(), FileSystem.WriteMode.OVERWRITE)
                 .setParallelism(1);
 
@@ -54,7 +55,6 @@ public class VehicleTelematics {
 
         accidents.writeAsCsv(Paths.get(outFilePath, "accidents.csv").toString(), FileSystem.WriteMode.OVERWRITE)
                 .setParallelism(1);
-
 
 
         //Execute application

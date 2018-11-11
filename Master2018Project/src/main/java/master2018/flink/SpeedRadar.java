@@ -8,6 +8,8 @@ public class SpeedRadar {
 
     public static SingleOutputStreamOperator detectSpeed (SingleOutputStreamOperator<TrafficEvent> tuples){
       return tuples
+
+      //Checking if a vehicle surpases 90mph
         .filter(new FilterFunction<TrafficEvent>() {
             @Override
             public boolean filter(TrafficEvent in) throws Exception {
@@ -15,6 +17,8 @@ public class SpeedRadar {
                 }else{return false;}
             }
         })
+
+        //Maps the output
         .map(new MapFunction<TrafficEvent, SpeedRadarEvent>() {
 
           SpeedRadarEvent out = new SpeedRadarEvent();
