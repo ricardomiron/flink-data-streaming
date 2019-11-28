@@ -1,6 +1,6 @@
 # Flink Project - Data Streaming
 
-> **Authors:** Mehdi El Idrissi Boutaher & Ricardo Mirón Torres </br>
+> **Authors:** Ricardo Mirón Torres </br>
 > **Univesity:** Universidad Politécnica de Madrid </br>
 > **Program:** Máster Universitario en Software y Sistemas </br>
 > **Subject:** Cloud Computing And Big Data Ecosystems Design
